@@ -58,11 +58,21 @@ public class SalesContract extends Contract {
     // Override Methods
     @Override
     public double getTotalPrice() {
-        return 0;
+        return getVehicleSold().getPrice() + (getVehicleSold().getPrice() * salesTaxAmount) + recordingFee + processingFee;
     }
 
     @Override
     public double getMonthlyPayment() {
-        return 0;
+        if(isFinanced){
+            if(getVehicleSold().getPrice() >= 10000){
+                return (getVehicleSold().getPrice() * 0.0425) / (1 - Math.pow(1 + (0.0425 / 12), -48));
+            }
+            else{
+                return (getVehicleSold().getPrice() * 0.0525) / (1 - Math.pow(1 + (0.0525 / 12), -24));
+            }
+        }
+        else{
+            return 0;
+        }
     }
 }
