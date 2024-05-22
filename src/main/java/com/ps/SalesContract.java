@@ -11,7 +11,7 @@ public class SalesContract extends Contract {
     // Constructor
     public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, boolean isFinanced) {
         super(date, customerName, customerEmail, vehicleSold);
-        this.salesTaxAmount = 0.05;
+        this.salesTaxAmount = vehicleSold.getPrice() * 0.05;
         this.recordingFee = 100;
         if (vehicleSold.getPrice() < 10000) {
             this.processingFee = 295;
@@ -58,7 +58,7 @@ public class SalesContract extends Contract {
     // Override Methods
     @Override
     public double getTotalPrice() {
-        return getVehicleSold().getPrice() + (getVehicleSold().getPrice() * salesTaxAmount) + recordingFee + processingFee;
+        return getVehicleSold().getPrice() + salesTaxAmount + recordingFee + processingFee;
     }
 
     @Override
