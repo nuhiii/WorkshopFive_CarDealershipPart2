@@ -7,6 +7,5 @@
 # Interesting Code
 ```java
  salesContract.getIsFinanced() ? "YES" : "NO",
-}
 ```
 - Usage of tertiary operator
