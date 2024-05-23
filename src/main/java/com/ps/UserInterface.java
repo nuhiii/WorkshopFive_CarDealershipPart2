@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class UserInterface {
     private Dealership dealership;
     private static Scanner scanner = new Scanner(System.in);
+    private ContractDataManager contractDataManager = new ContractDataManager();
 
     public void display(){
         init();
@@ -23,6 +24,7 @@ public class UserInterface {
             System.out.println("7- List ALL vehicles");
             System.out.println("8- Add a vehicle");
             System.out.println("9- Remove a vehicle");
+            System.out.println("10- Sell/Lease a vehicle");
             System.out.println("99- Quit");
 
             System.out.print("Please choose an option: ");
@@ -57,10 +59,74 @@ public class UserInterface {
                 case 9:
                     processRemoveVehicleRequest();
                     break;
+                case 10:
+                    processSellOrLeaseVehicle();
+                    break;
                 case 99:
                     break;
+                default:
+                    System.out.println("Invalid option. Try again.");
             }
         } while(mainMenuCommand != 99);
+    }
+
+    private void processSellOrLeaseVehicle() {
+        // Select Vehicle by VIN
+        List<Vehicle> allVehicles = this.dealership.getAllVehicles();
+        System.out.println("Welcome to Sell or Lease a Vehicle");
+        System.out.print("Enter VIN of the vehicle: ");
+        int vin = scanner.nextInt();
+        Vehicle selectedVehicle = null;
+        for (Vehicle vehicle : allVehicles) {
+            if (vehicle.getVin() == vin) {
+                selectedVehicle = vehicle;
+            }
+        }
+        if (selectedVehicle == null) {
+            System.out.println("Vehicle NOT found!");
+            return;
+        }
+        scanner.nextLine();
+
+        // Fill Contract Type Info
+        System.out.print("Enter contract date (YYYYMMDD): ");
+        String date = scanner.nextLine();
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+
+        System.out.print("Enter customer email: ");
+        String customerEmail = scanner.nextLine();
+
+        System.out.print("Is this a sale or a lease? (Enter 'sale' or 'lease'): ");
+        String contractType = scanner.nextLine();
+
+        // Enter Into Correct Contract Type
+        if (contractType.equalsIgnoreCase("sale")) {
+            System.out.print("Is the vehicle financed? (yes/no): ");
+            String financed = scanner.nextLine();
+            boolean isFinanced = financed.equalsIgnoreCase("yes");
+
+            SalesContract salesContract = new SalesContract(date, customerName, customerEmail, selectedVehicle, isFinanced);
+            contractDataManager.saveContract(salesContract);
+            System.out.println("Sales contract saved.");
+        } else if (contractType.equalsIgnoreCase("lease")) {
+            if (selectedVehicle.getYear() < (java.time.LocalDate.now().getYear() - 3)) {
+                System.out.println("Vehicle is too old to be leased.");
+                return;
+            }
+            LeaseContract leaseContract = new LeaseContract(date, customerName, customerEmail, selectedVehicle);
+            contractDataManager.saveContract(leaseContract);
+            System.out.println("Lease contract saved.");
+        } else {
+            System.out.println("Invalid contract type.");
+            return;
+        }
+
+        // Remove vehicle from inventory
+        this.dealership.removeVehicle(selectedVehicle);
+        DealershipFileManager.saveDealership(this.dealership);
+        System.out.println("Vehicle has been removed from the inventory.");
     }
 
     private void init(){

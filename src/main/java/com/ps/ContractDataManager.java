@@ -9,7 +9,7 @@ public class ContractDataManager {
             BufferedWriter bufWriter = new BufferedWriter(new FileWriter("DB_Contract.csv", true));
             if (contract instanceof SalesContract salesContract){
                 bufWriter.write(String.format("SALE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f|%s|%.2f\n",
-                        salesContract.getCustomerName(),
+                        salesContract.getDate(),
                         salesContract.getCustomerName(),
                         salesContract.getCustomerEmail(),
                         salesContract.getVehicleSold().getVin(),
@@ -28,7 +28,7 @@ public class ContractDataManager {
                         salesContract.getMonthlyPayment()));
             } else if (contract instanceof LeaseContract leaseContract){
                 bufWriter.write(String.format("LEASE|%s|%s|%s|%d|%d|%s|%s|%s|%s|%d|%.2f|%.2f|%.2f|%.2f|%.2f\n",
-                        leaseContract.getCustomerName(),
+                        leaseContract.getDate(),
                         leaseContract.getCustomerName(),
                         leaseContract.getCustomerEmail(),
                         leaseContract.getVehicleSold().getVin(),
