@@ -4,7 +4,7 @@
 <img width="582" alt="Screenshot 2024-05-22 at 8 57 29 PM" src="https://github.com/nuhiii/WorkshopFive_CarDealershipPart2/assets/143645213/1f639a47-7d40-4241-ae91-dce39605afae">
 <img width="582" alt="Screenshot 2024-05-22 at 8 57 44 PM" src="https://github.com/nuhiii/WorkshopFive_CarDealershipPart2/assets/143645213/b1507086-acbe-4894-8852-143a51a43c50">
 
-- Followed Structure based on code previously done and as per additional requirement
+- Followed similar structure as to code previously done and added on to base as per additional requirement
 
 # Interesting Code
 ```java
